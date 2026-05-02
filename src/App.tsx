@@ -4,7 +4,6 @@ import './Responsive.css';
 
 function App() {
   const [phone, setPhone] = useState('');
-  const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [showTopBar, setShowTopBar] = useState(() => {
     return localStorage.getItem('hideTopBar') !== 'true';
   });
@@ -13,7 +12,6 @@ function App() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [loginStep, setLoginStep] = useState<'mobile' | 'otp' | 'password'>('mobile');
   const [loginPhone, setLoginPhone] = useState('');
-  const [otp, setOtp] = useState(['', '', '', '']);
   const [loginPassword, setLoginPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [resendTimer, setResendTimer] = useState(30);
@@ -138,7 +136,6 @@ function App() {
             setIsLoginOpen(true);
             setLoginStep('mobile');
             setLoginPhone('');
-            setOtp(['', '', '', '']);
             setLoginPassword('');
             setResendTimer(30);
           }}>Login</button>
