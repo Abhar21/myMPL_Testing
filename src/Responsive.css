@@ -1,0 +1,81 @@
+/* --------------------------------------------------
+   Responsive styles for the direct booking platform
+-------------------------------------------------- */
+
+.main-grid-container {
+  display: grid !important;
+  grid-template-columns: 1.2fr 1fr !important;
+  grid-template-areas: 
+    "text card"
+    "features card" !important;
+  gap: 60px !important;
+  box-sizing: border-box !important;
+}
+
+.main-text-group {
+  grid-area: text !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 28px !important;
+}
+
+.onboarding-right {
+  grid-area: card !important;
+}
+
+.documents-features-group {
+  grid-area: features !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 28px !important;
+}
+
+@media (max-width: 1024px) {
+  .main-grid-container {
+    grid-template-columns: 1fr !important;
+    grid-template-areas: 
+      "text"
+      "card"
+      "features" !important;
+    gap: 16px !important;
+    padding: 24px !important;
+  }
+
+  .main-text-group {
+    gap: 12px !important;
+  }
+
+  .onboarding-right {
+    margin-top: 4px !important;
+  }
+
+  .banner-heading {
+    font-size: 15px !important;
+  }
+
+  .ends-may-text {
+    display: none !important;
+  }
+
+  .documents-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  .features-mini-grid {
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
+
+  .documents-grid span {
+    font-size: 16px !important;
+  }
+
+  .feature-label-title {
+    font-size: 17px !important;
+  }
+
+  .feature-label-desc {
+    font-size: 15px !important;
+  }
+}
