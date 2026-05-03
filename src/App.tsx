@@ -4,9 +4,6 @@ import './Responsive.css';
 
 function App() {
   const [phone, setPhone] = useState('');
-  const [showTopBar, setShowTopBar] = useState(() => {
-    return localStorage.getItem('hideTopBar') !== 'true';
-  });
 
   // Login Modal States
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -73,57 +70,7 @@ function App() {
 
   return (
     <div className="landing-wrapper">
-      {showTopBar && (
-        <div className="announcement-strap" style={{
-          width: '100%',
-          background: 'linear-gradient(135deg, #7c3aed 0%, #db2777 100%)',
-          color: '#ffffff',
-          padding: '10px 16px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          boxSizing: 'border-box',
-          fontSize: '13px',
-          fontWeight: 600,
-          letterSpacing: '0.2px',
-          position: 'relative',
-          gap: '8px'
-        }}>
-          <span style={{ flex: 1, textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', flexWrap: 'wrap' }}>
-            <span>🚀 ₹0 onboarding for early partners</span>
-            <span>•</span>
-            <span>12-month money-back guarantee</span>
-            <span>•</span>
-            <span>Low commission</span>
-          </span>
-          <button
-            onClick={() => {
-              setShowTopBar(false);
-              localStorage.setItem('hideTopBar', 'true');
-            }}
-            style={{
-              background: 'none',
-              border: 'none',
-              color: '#ffffff',
-              fontSize: '18px',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '4px',
-              lineHeight: 1,
-              opacity: 0.85,
-              transition: 'opacity 0.2s ease',
-              outline: 'none',
-              position: 'absolute',
-              right: '16px'
-            }}
-            aria-label="Close"
-          >
-            ×
-          </button>
-        </div>
-      )}
+
       {/* 1. HEADER / NAVBAR */}
       <header className="site-header">
         <div className="header-logo-container">
@@ -290,7 +237,7 @@ function App() {
             display: 'flex',
             flexDirection: 'column'
           }}>
-            <div className="card-top-content" style={{ padding: '32px 32px 24px 32px', display: 'flex', flexDirection: 'column', gap: '16px', position: 'relative' }}>
+            <div className="card-top-content" style={{ padding: '32px 24px 24px 24px', display: 'flex', flexDirection: 'column', gap: '16px', position: 'relative' }}>
               {/* Partners joining badge */}
               <div className="normal-badge">
                 <span>Partners joining Everyday</span>
@@ -725,33 +672,26 @@ function App() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                 <label style={{ fontSize: '13px', color: '#4b5563', fontWeight: 600 }}>Mobile Number, Email ID or Vendor ID</label>
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  border: '1.5px solid #e5e7eb',
-                  borderRadius: '12px',
-                  padding: '4px 12px',
-                  gap: '12px',
-                  background: '#fafafa'
-                }}>
-                  <input
-                    type="text"
-                    placeholder="Enter"
-                    value={loginPhone}
-                    onChange={(e) => setLoginPhone(e.target.value)}
-                    style={{
-                      flex: 1,
-                      padding: '12px 4px',
-                      border: 'none',
-                      background: 'none',
-                      fontSize: '14.5px',
-                      color: '#111827',
-                      outline: 'none',
-                      fontWeight: 500
-                    }}
-                    autoFocus
-                  />
-                </div>
+                <input
+                  type="text"
+                  placeholder="Enter"
+                  value={loginPhone}
+                  onChange={(e) => setLoginPhone(e.target.value)}
+                  style={{
+                    width: '100%',
+                    boxSizing: 'border-box',
+                    padding: '12px 16px',
+                    border: '1.5px solid #e5e7eb',
+                    borderRadius: '12px',
+                    fontSize: '14.5px',
+                    color: '#111827',
+                    background: '#fafafa',
+                    outline: 'none',
+                    transition: 'border-color 0.2s ease',
+                    fontWeight: 500
+                  }}
+                  autoFocus
+                />
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
