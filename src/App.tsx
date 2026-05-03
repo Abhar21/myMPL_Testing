@@ -23,6 +23,25 @@ function App() {
   const [forgotTimer, setForgotTimer] = useState(30);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isContactOpen, setIsContactOpen] = useState(false);
+
+  const [currentPage, setCurrentPage] = useState<'home' | 'about'>(() => {
+    return window.location.pathname === '/about' ? 'about' : 'home';
+  });
+
+  useEffect(() => {
+    const onPopState = () => {
+      setCurrentPage(window.location.pathname === '/about' ? 'about' : 'home');
+    };
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
+  }, []);
+
+  const navigateTo = (page: 'home' | 'about') => {
+    setCurrentPage(page);
+    window.history.pushState(null, '', page === 'about' ? '/about' : '/');
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  };
 
   // Countdown to May 30 deadline
   const [countdown, setCountdown] = useState({ days: 0, hours: 0, mins: 0, secs: 0 });
@@ -67,6 +86,139 @@ function App() {
   };
 
   const isValidPhone = phone.length === 10;
+
+  if (currentPage === 'about') {
+    return (
+      <div className="landing-wrapper" style={{ minHeight: '100vh', background: '#fafafa' }}>
+        {/* About Header / Back button */}
+        <header className="site-header" style={{ borderBottom: '1px solid rgba(0,0,0,0.05)', background: '#ffffff', padding: '16px 24px', position: 'sticky', top: 0, zIndex: 100 }}>
+          <div className="header-logo-container" onClick={() => navigateTo('home')} style={{ cursor: 'pointer' }}>
+            <div className="brand-logo-text">myMooment</div>
+            <div className="brand-subtitle">About Us</div>
+          </div>
+          <button
+            onClick={() => navigateTo('home')}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: '#7c3aed',
+              fontSize: '14.5px',
+              fontWeight: 600,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              outline: 'none',
+              transition: 'transform 0.2s ease'
+            }}
+            onMouseOver={(e) => (e.currentTarget.style.transform = 'translateX(-2px)')}
+            onMouseOut={(e) => (e.currentTarget.style.transform = 'none')}
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ width: '16px', height: '16px' }}>
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Back to home
+          </button>
+        </header>
+
+        <main style={{ maxWidth: '800px', margin: '0 auto', padding: '60px 24px 80px 24px', display: 'flex', flexDirection: 'column', gap: '64px' }}>
+          {/* HERO */}
+          <section style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: '#f5f3ff', color: '#7c3aed', padding: '6px 14px', borderRadius: '30px', fontSize: '13px', fontWeight: 600, alignSelf: 'center', border: '1px solid rgba(124, 58, 237, 0.15)' }}>
+              Get to know us
+            </div>
+            <h1 style={{ fontSize: 'clamp(32px, 5vw, 46px)', fontWeight: 800, color: '#111827', margin: 0, letterSpacing: '-1px', lineHeight: 1.15 }}>
+              About myMooment
+            </h1>
+            <p style={{ fontSize: 'clamp(16px, 2.5vw, 19px)', color: '#4b5563', margin: 0, lineHeight: 1.5, maxWidth: '600px', alignSelf: 'center' }}>
+              A direct booking platform built for event vendors
+            </p>
+          </section>
+
+          {/* SECTION 1: THE PROBLEM */}
+          <section style={{ display: 'flex', flexDirection: 'column', gap: '16px', background: '#ffffff', border: '1px solid rgba(0,0,0,0.05)', padding: '40px', borderRadius: '24px', boxShadow: '0 4px 12px rgba(0,0,0,0.01)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <div style={{ width: '36px', height: '36px', background: '#fee2e2', color: '#ef4444', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px', flexShrink: 0 }}>⚠️</div>
+              <h2 style={{ fontSize: '22px', fontWeight: 800, color: '#111827', margin: 0 }}>The problem we saw</h2>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '4px' }}>
+              <p style={{ fontSize: '15.5px', color: '#4b5563', margin: 0, lineHeight: 1.6 }}>
+                Event vendors rely on calls, follow-ups, and uncertain bookings.
+              </p>
+              <p style={{ fontSize: '15.5px', color: '#4b5563', margin: 0, lineHeight: 1.6 }}>
+                Customers struggle to find the right vendors, and vendors struggle to get confirmed business.
+              </p>
+              <p style={{ fontSize: '15.5px', color: '#4b5563', margin: 0, lineHeight: 1.6, fontWeight: 500 }}>
+                The process is slow, manual, and unpredictable.
+              </p>
+            </div>
+          </section>
+
+          {/* SECTION 2: THE SOLUTION */}
+          <section style={{ display: 'flex', flexDirection: 'column', gap: '16px', background: '#ffffff', border: '1px solid rgba(0,0,0,0.05)', padding: '40px', borderRadius: '24px', boxShadow: '0 4px 12px rgba(0,0,0,0.01)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <div style={{ width: '36px', height: '36px', background: '#f5f3ff', color: '#7c3aed', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px', flexShrink: 0 }}>✨</div>
+              <h2 style={{ fontSize: '22px', fontWeight: 800, color: '#111827', margin: 0 }}>What we built</h2>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '4px' }}>
+              <p style={{ fontSize: '15.5px', color: '#4b5563', margin: 0, lineHeight: 1.6 }}>
+                myMooment enables direct bookings between customers and vendors.
+              </p>
+              <p style={{ fontSize: '15.5px', color: '#4b5563', margin: 0, lineHeight: 1.6 }}>
+                Customers can discover services and book instantly—without calls or negotiations.
+              </p>
+              <p style={{ fontSize: '15.5px', color: '#111827', margin: 0, lineHeight: 1.6, fontWeight: 600 }}>
+                Vendors receive confirmed bookings with advance payments.
+              </p>
+            </div>
+          </section>
+
+          {/* SECTION 3: WHY DIFFERENT */}
+          <section style={{ display: 'flex', flexDirection: 'column', gap: '16px', background: '#ffffff', border: '1px solid rgba(0,0,0,0.05)', padding: '40px', borderRadius: '24px', boxShadow: '0 4px 12px rgba(0,0,0,0.01)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <div style={{ width: '36px', height: '36px', background: '#ecfdf5', color: '#10b981', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px', flexShrink: 0 }}>💡</div>
+              <h2 style={{ fontSize: '22px', fontWeight: 800, color: '#111827', margin: 0 }}>Why myMooment is different</h2>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '14px', marginTop: '12px' }}>
+              {[
+                { label: 'Direct bookings', desc: 'Real confirmed bookings, not leads' },
+                { label: 'Advance payments', desc: 'Secure advance payment before events' },
+                { label: 'Full pricing control', desc: 'Set and adjust your own transparent rates' },
+                { label: 'Transparent platform', desc: 'Clear policies, fair settlements, no surprises' }
+              ].map((item, idx) => (
+                <div key={idx} style={{ padding: '18px 20px', background: '#fafafa', borderRadius: '16px', border: '1px solid #f1f5f9', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#059669" strokeWidth="2.5" style={{ width: '18px', height: '18px' }}>
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                    <span style={{ fontSize: '14.5px', fontWeight: 700, color: '#111827' }}>{item.label}</span>
+                  </div>
+                  <span style={{ fontSize: '13px', color: '#6b7280', lineHeight: 1.4, paddingLeft: '28px' }}>{item.desc}</span>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* SECTION 4: VISION */}
+          <section style={{ display: 'flex', flexDirection: 'column', gap: '16px', background: '#ffffff', border: '1px solid rgba(0,0,0,0.05)', padding: '40px', borderRadius: '24px', boxShadow: '0 4px 12px rgba(0,0,0,0.01)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <div style={{ width: '36px', height: '36px', background: '#fffbeb', color: '#f59e0b', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px', flexShrink: 0 }}>🎯</div>
+              <h2 style={{ fontSize: '22px', fontWeight: 800, color: '#111827', margin: 0 }}>Our vision</h2>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '4px' }}>
+              <p style={{ fontSize: '15.5px', color: '#4b5563', margin: 0, lineHeight: 1.6 }}>
+                We’re building a platform where event services are as easy to book as ordering food.
+              </p>
+              <p style={{ fontSize: '15.5px', color: '#4b5563', margin: 0, lineHeight: 1.6 }}>
+                A system where vendors grow through real bookings, not follow-ups.
+              </p>
+            </div>
+          </section>
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className="landing-wrapper">
@@ -225,7 +377,7 @@ function App() {
 
         {/* 3. RIGHT COLUMN - MOBILE LOGIN/REGISTER CARD (2ND IMAGE UI) */}
         <section className="onboarding-right">
-          <div className="login-card" style={{
+          <div id="get-started-card" className="login-card" style={{
             background: '#ffffff',
             border: '1.5px solid rgba(0, 0, 0, 0.05)',
             borderRadius: '24px',
@@ -558,14 +710,73 @@ function App() {
           {/* COLUMN 2 */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
             <h4 style={{ fontSize: '15px', fontWeight: 600, color: '#ffffff', textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 4px 0' }}>Company</h4>
-            <a href="#about" style={{ color: '#9ca3af', textDecoration: 'none', fontSize: '14px', transition: 'color 0.2s' }}>About Us</a>
-            <a href="#contact" style={{ color: '#9ca3af', textDecoration: 'none', fontSize: '14px', transition: 'color 0.2s' }}>Contact Us</a>
+            <button
+              onClick={() => navigateTo('about')}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#9ca3af',
+                textDecoration: 'none',
+                fontSize: '14px',
+                transition: 'color 0.2s',
+                cursor: 'pointer',
+                textAlign: 'left',
+                padding: 0,
+                outline: 'none'
+              }}
+              onMouseOver={(e) => (e.currentTarget.style.color = '#ffffff')}
+              onMouseOut={(e) => (e.currentTarget.style.color = '#9ca3af')}
+            >
+              About Us
+            </button>
+            <button
+              onClick={() => setIsContactOpen(true)}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#9ca3af',
+                textDecoration: 'none',
+                fontSize: '14px',
+                transition: 'color 0.2s',
+                cursor: 'pointer',
+                textAlign: 'left',
+                padding: 0,
+                outline: 'none'
+              }}
+              onMouseOver={(e) => (e.currentTarget.style.color = '#ffffff')}
+              onMouseOut={(e) => (e.currentTarget.style.color = '#9ca3af')}
+            >
+              Contact Us
+            </button>
           </div>
 
           {/* COLUMN 3 */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
             <h4 style={{ fontSize: '15px', fontWeight: 600, color: '#ffffff', textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 4px 0' }}>For Event Partners</h4>
-            <a href="#partner" style={{ color: '#9ca3af', textDecoration: 'none', fontSize: '14px', transition: 'color 0.2s' }}>Become a Partner</a>
+            <button
+              onClick={() => {
+                const elem = document.getElementById('get-started-card');
+                if (elem) {
+                  elem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+              }}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#9ca3af',
+                textDecoration: 'none',
+                fontSize: '14px',
+                transition: 'color 0.2s',
+                cursor: 'pointer',
+                textAlign: 'left',
+                padding: 0,
+                outline: 'none'
+              }}
+              onMouseOver={(e) => (e.currentTarget.style.color = '#ffffff')}
+              onMouseOut={(e) => (e.currentTarget.style.color = '#9ca3af')}
+            >
+              Become a Partner
+            </button>
           </div>
 
           {/* COLUMN 4 */}
@@ -803,8 +1014,13 @@ function App() {
                   New to myMooment?{' '}
                   <button
                     onClick={() => {
-                      alert('Account creation is coming soon!');
                       setIsLoginOpen(false);
+                      setTimeout(() => {
+                        const elem = document.getElementById('get-started-card');
+                        if (elem) {
+                          elem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                      }, 100);
                     }}
                     style={{
                       background: 'none',
@@ -824,6 +1040,166 @@ function App() {
                   ₹0 Onboarding charges
                 </span>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 4. CONTACT US MODAL */}
+      {isContactOpen && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundColor: 'rgba(0, 0, 0, 0.45)',
+          backdropFilter: 'blur(6px)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 1100,
+          padding: '20px',
+          boxSizing: 'border-box'
+        }}>
+          <div style={{
+            background: '#ffffff',
+            borderRadius: '24px',
+            padding: '40px 32px',
+            width: '100%',
+            maxWidth: '440px',
+            boxSizing: 'border-box',
+            position: 'relative',
+            boxShadow: '0 12px 40px rgba(0, 0, 0, 0.12)',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '32px'
+          }}>
+            <button
+              onClick={() => setIsContactOpen(false)}
+              style={{
+                position: 'absolute',
+                top: '24px',
+                right: '24px',
+                background: '#f3f4f6',
+                border: 'none',
+                color: '#6b7280',
+                borderRadius: '50%',
+                width: '32px',
+                height: '32px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                fontSize: '18px',
+                outline: 'none',
+                transition: 'background-color 0.2s ease',
+                padding: 0
+              }}
+              onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#e5e7eb')}
+              onMouseOut={(e) => (e.currentTarget.style.backgroundColor = '#f3f4f6')}
+            >
+              ×
+            </button>
+
+            <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <h3 style={{ fontSize: '26px', fontWeight: 800, color: '#111827', margin: 0 }}>Contact us</h3>
+              <p style={{ fontSize: '14.5px', color: '#6b7280', margin: 0, lineHeight: 1.5 }}>We're here to help you get started on myMooment</p>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              {/* Option 1: Call Us */}
+              <a href="tel:+918147413994" style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '20px',
+                padding: '20px 24px',
+                border: '1.5px solid #e5e7eb',
+                borderRadius: '16px',
+                textDecoration: 'none',
+                color: 'inherit',
+                transition: 'all 0.2s ease',
+                background: '#fafafa'
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.borderColor = '#7c3aed';
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.03)';
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.borderColor = '#e5e7eb';
+                e.currentTarget.style.transform = 'none';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
+              >
+                <div style={{
+                  background: '#f5f3ff',
+                  borderRadius: '14px',
+                  width: '52px',
+                  height: '52px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#7c3aed'
+                }}>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: '24px', height: '24px' }}>
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                  </svg>
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
+                  <span style={{ fontSize: '13px', fontWeight: 600, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Call us</span>
+                  <span style={{ fontSize: '16px', fontWeight: 700, color: '#111827' }}>+91 81474 13994</span>
+                </div>
+              </a>
+
+              {/* Option 2: Email Us */}
+              <a href="mailto:support@mymooment.com" style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '20px',
+                padding: '20px 24px',
+                border: '1.5px solid #e5e7eb',
+                borderRadius: '16px',
+                textDecoration: 'none',
+                color: 'inherit',
+                transition: 'all 0.2s ease',
+                background: '#fafafa'
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.borderColor = '#7c3aed';
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.03)';
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.borderColor = '#e5e7eb';
+                e.currentTarget.style.transform = 'none';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
+              >
+                <div style={{
+                  background: '#fdf4ff',
+                  borderRadius: '14px',
+                  width: '52px',
+                  height: '52px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#db2777'
+                }}>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: '24px', height: '24px' }}>
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                    <polyline points="22,6 12,13 2,6" />
+                  </svg>
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
+                  <span style={{ fontSize: '13px', fontWeight: 600, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Email us</span>
+                  <span style={{ fontSize: '16px', fontWeight: 700, color: '#111827' }}>support@mymooment.com</span>
+                </div>
+              </a>
+            </div>
+
+            <div style={{ textAlign: 'center', borderTop: '1px solid #f3f4f6', paddingTop: '16px' }}>
+              <span style={{ fontSize: '13px', color: '#6b7280', fontWeight: 500 }}>We typically respond within a few hours</span>
             </div>
           </div>
         </div>
